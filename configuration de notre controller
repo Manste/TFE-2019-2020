@@ -1,0 +1,31 @@
+Caractéristiques matérielles:
+	* 1-2 CPU
+	* 8GB RAM
+	* 100 GB de mémoire
+	* 2 NIC
+
+Réseau à implémenter: 
+Notre controller Node aura besoin de trois interface:
+	* interface de management avec 10.0.0.1/24 avec une passerelle 10.0.0.1:
+		Ce réseau requière une passerelle par défaut pour donner accès à l'internet à tous les noeuds avec pour but administrative comme par exemple l'installation des package, la mise à jour de sécurité, ainsi que le DNS et le serveur NTP.
+	* Le réseau du provider avec 203.0.113.0/24 avec comme passerelle 203.0.113.1:
+		Ce réseau requière une passerelle pour donner accès à internet aux noeuds pour notre environnement openstack.
+	* Le réseau NAT local:
+		Pour assurer la communication entre nos différentes instances de nos machines virtuelles.
+
+
+******************************************************************************** Configuration du Controller*********************************************************************************
+Adresse IP de management: 10.0.0.11 /pas de DHCP
+Serveur DNS: 10.0.0.11
+
+
+
+Une fois que nous avons installé ubuntu 16.04 sur nos différentes machines virtuelles, il faudra:
+- donner les droits sudo à l'utilisateur créé pour qu'il est accès à tout grâce à "visudo": "manste ALL=(ALL) ALL"
+- éditer le serveur DNS sur le controller s'il y en a ou configurer le fichier "/etc/hosts"
+- Maintenant nous devons configurer les interfaces du réseau, et modifier les noms des interfaces pour qu'ils utilisent le nommage des interfaces standards
+	* éditer le fichier de grub en changeant la line <<GRUB_CMDLINE_LINUX="">>
+		en <<GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0">>
+	* Mettre à jour "$ sudo update-grub"
+	* redemarrer le système avec la commande "reboot"
+- 
