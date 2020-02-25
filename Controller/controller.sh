@@ -3,7 +3,7 @@
 #crudini va nous servir plutard pour la configuration de certains packages
 
 #Configurer la base de données SQL
-apt install mariadb-server python3-pymysql -y
+apt install mariadb-server python3-pymysql crudini -y
 cat > /etc/mysql/mariadb.conf.d/99-openstack.cnf << EOT
 [mysqld]
 bind-address = 10.0.0.11
