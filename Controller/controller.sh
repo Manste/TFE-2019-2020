@@ -17,7 +17,7 @@ EOT
 service mysql restart
 
 #Configurer la File d'attente de messages 
-apt install rabbitmq-server
+apt install rabbitmq-server -y
 rabbitmqctl add_user openstack RABBIT_PASS
 rabbitmqctl set_permissions openstack ".*" ".*" ".*"
 
@@ -39,6 +39,7 @@ ETCD_ADVERTISE_CLIENT_URLS="http://10.0.0.11:2379"
 ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"
 ETCD_LISTEN_CLIENT_URLS="http://10.0.0.11:2379"
 EOT
+sudo su
 systemctl enable etcd
 systemctl restart etcd
 
