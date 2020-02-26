@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #*************************** controller*****************************
 
 #crudini va nous servir plutard pour la configuration de certains packages
