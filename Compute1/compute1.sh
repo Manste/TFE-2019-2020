@@ -1,11 +1,7 @@
 #!/bin/bash
 
 #*********************************************** Compute1 **************************************************
-
-apt install nova-compute crudini -y
-sleep 2
-
-crudini --set /etc/nova/nova.conf DEFAULT transport_url rabbit://openstack:RABBIT_PASS@controller
+crudini --set /etc/nova/nova.conf DEFAULT transport_url rabbit://openstack:openstack@controller
 crudini --set /etc/nova/nova.conf auth_strategy keystone
 crudini --set /etc/nova/nova.conf keystone_authtoken www_authenticate_uri http://controller:5000/
 crudini --set /etc/nova/nova.conf keystone_authtoken auth_url http://controller:5000/
@@ -15,7 +11,7 @@ crudini --set /etc/nova/nova.conf keystone_authtoken project_domain_name Default
 crudini --set /etc/nova/nova.conf keystone_authtoken user_domain_name Default
 crudini --set /etc/nova/nova.conf keystone_authtoken project_name service
 crudini --set /etc/nova/nova.conf keystone_authtoken username nova
-crudini --set /etc/nova/nova.conf keystone_authtoken password NOVA_PASS
+crudini --set /etc/nova/nova.conf keystone_authtoken password openstack
 crudini --set /etc/nova/nova.conf DEFAULT my_ip 10.0.0.31
 crudini --set /etc/nova/nova.conf DEFAULT use_neutron true
 crudini --set /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
@@ -32,13 +28,4 @@ crudini --set /etc/nova/nova.conf placement auth_type password
 crudini --set /etc/nova/nova.conf placement user_domain_name Default
 crudini --set /etc/nova/nova.conf placement auth_url http://controller:5000/v3
 crudini --set /etc/nova/nova.conf placement username placement
-crudini --set /etc/nova/nova.conf placement password PLACEMENT_PASS
-
-export TEST=`egrep -c '(vmx|svm)' /proc/cpuinfo`
-
-if [ $TEST < 1 ]
-then
-	crudini --set /etc/nova/nova.conf libvirt virt_type qemu
-fi
-
-service nova-compute restart	
+crudini --set /etc/nova/nova.conf placement password openstack
