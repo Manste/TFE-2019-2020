@@ -1,6 +1,7 @@
 #*********************************************** Compute1 **************************************************
 
 apt install nova-compute -y
+sleep 3
 
 crudini --set /etc/nova/nova.conf DEFAULT transport_url rabbit://openstack:RABBIT_PASS@controller
 crudini --set /etc/nova/nova.conf auth_strategy keystone
@@ -31,9 +32,9 @@ crudini --set /etc/nova/nova.conf placement auth_url http://controller:5000/v3
 crudini --set /etc/nova/nova.conf placement username placement
 crudini --set /etc/nova/nova.conf placement password PLACEMENT_PASS
 
-export TEST = `egrep -c '(vmx|svm)' /proc/cpuinfo`
+export TEST=`egrep -c '(vmx|svm)' /proc/cpuinfo`
 
-if [ $TEST < 1]
+if [ $TEST < 1 ]
 then
 	crudini --set /etc/nova/nova.conf libvirt virt_type qemu
 fi
