@@ -1,7 +1,7 @@
 #*********************************************** Compute1 **************************************************
 
 apt install nova-compute -y
-sleep 3
+sleep 2
 
 crudini --set /etc/nova/nova.conf DEFAULT transport_url rabbit://openstack:RABBIT_PASS@controller
 crudini --set /etc/nova/nova.conf auth_strategy keystone
