@@ -2,7 +2,7 @@ crudini --set /etc/neutron/neutron.conf database connection mysql+pymysql://neut
 crudini --set /etc/neutron/neutron.conf DEFAULT core_plugin ml2
 crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins router
 crudini --set /etc/neutron/neutron.conf DEFAULT allow_overlapping_ips true
-crudini --set /etc/neutron/neutron.conf DEFAULT transport_url rabbit://openstack:RABBIT_PASS@controller
+crudini --set /etc/neutron/neutron.conf DEFAULT transport_url rabbit://openstack:openstack@controller
 crudini --set /etc/neutron/neutron.conf DEFAULT auth_strategy keystone
 crudini --set /etc/neutron/neutron.conf keystone_authtoken www_authenticate_uri http://controller:5000
 crudini --set /etc/neutron/neutron.conf keystone_authtoken auth_url http://controller:5000
@@ -56,6 +56,6 @@ crudini --set /etc/nova/nova.conf neutron user_domain_name default
 crudini --set /etc/nova/nova.conf neutron region_name RegionOne
 crudini --set /etc/nova/nova.conf neutron project_name service
 crudini --set /etc/nova/nova.conf neutron username neutron
-crudini --set /etc/nova/nova.conf neutron password NEUTRON_PASS
+crudini --set /etc/nova/nova.conf neutron password openstack
 crudini --set /etc/nova/nova.conf neutron service_metadata_proxy true
 crudini --set /etc/nova/nova.conf neutron metadata_proxy_shared_secret openstack
