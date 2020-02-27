@@ -270,3 +270,17 @@ service nova-scheduler restart
 service nova-conductor restart
 service nova-novncproxy restart
 # Lancer la configuration du Compute1
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Neutron
+crudini --set /etc/neutron/metadata_agent.ini DEFAULT nova_metadata_host controller
+crudini --set /etc/neutron/metadata_agent.ini DEFAULT metadata_proxy_shared_secret METADATA_SECRET
+crudini --set /etc/nova/nova.conf neutron auth_url http://controller:5000
+crudini --set /etc/nova/nova.conf neutron neutron auth_type password
+crudini --set /etc/nova/nova.conf neutron neutron project_domain_name default
+crudini --set /etc/nova/nova.conf neutron neutron user_domain_name default
+crudini --set /etc/nova/nova.conf neutron neutron region_name RegionOne
+crudini --set /etc/nova/nova.conf neutron neutron project_name service
+crudini --set /etc/nova/nova.conf neutron neutron username neutron
+crudini --set /etc/nova/nova.conf neutron neutron password NEUTRON_PASS
+crudini --set /etc/nova/nova.conf neutron neutron service_metadata_proxy true
+crudini --set /etc/nova/nova.conf neutron neutron metadata_proxy_shared_secret METADATA_SECRET
