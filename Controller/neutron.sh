@@ -3,7 +3,7 @@ crudini --set /etc/neutron/neutron.conf DEFAULT core_plugin ml2
 crudini --set /etc/neutron/neutron.conf DEFAULT service_plugins router
 crudini --set /etc/neutron/neutron.conf DEFAULT allow_overlapping_ips true
 crudini --set /etc/neutron/neutron.conf DEFAULT transport_url rabbit://openstack:openstack@controller
-crudini --set /etc/neutron/neutron.conf DEFAULT auth_strategy keystone
+crudini --set /etc/neutron/neutron.conf api auth_strategy keystone
 crudini --set /etc/neutron/neutron.conf keystone_authtoken www_authenticate_uri http://controller:5000
 crudini --set /etc/neutron/neutron.conf keystone_authtoken auth_url http://controller:5000
 crudini --set /etc/neutron/neutron.conf keystone_authtoken memcached_servers controller:11211
