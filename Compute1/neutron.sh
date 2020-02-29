@@ -18,11 +18,11 @@ crudini --set /etc/neutron/plugins/ml2/linuxbridge_agent.ini l2_population true
 crudini --set /etc/neutron/plugins/ml2/linuxbridge_agent.ini securitygroup enable_security_group true
 crudini --set /etc/neutron/plugins/ml2/linuxbridge_agent.ini securitygroup firewall_driver neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 
-crudini --set/etc/nova/nova.conf neutron auth_url http://controller:5000
-crudini --set/etc/nova/nova.conf neutron auth_type password
-crudini --set/etc/nova/nova.conf neutron project_domain_name default
-crudini --set/etc/nova/nova.conf neutron user_domain_name default
-crudini --set/etc/nova/nova.conf neutron region_name RegionOne
-crudini --set/etc/nova/nova.conf neutron project_name service
-crudini --set/etc/nova/nova.conf neutron username neutron
-crudini --set/etc/nova/nova.conf neutron password openstack
+crudini --set /etc/nova/nova.conf neutron auth_url http://controller:5000
+crudini --set /etc/nova/nova.conf neutron auth_type password
+crudini --set /etc/nova/nova.conf neutron project_domain_name default
+crudini --set /etc/nova/nova.conf neutron user_domain_name default
+crudini --set /etc/nova/nova.conf neutron region_name RegionOne
+crudini --set /etc/nova/nova.conf neutron project_name service
+crudini --set /etc/nova/nova.conf neutron username neutron
+crudini --set /etc/nova/nova.conf neutron password openstack
