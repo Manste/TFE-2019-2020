@@ -27,3 +27,4 @@ crudini --set /etc/nova/nova.conf placement user_domain_name Default
 crudini --set /etc/nova/nova.conf placement auth_url http://controller:5000/v3
 crudini --set /etc/nova/nova.conf placement username placement
 crudini --set /etc/nova/nova.conf placement password openstack
+crudini --del /etc/nova/nova.conf DEFAULT log_dir
