@@ -45,7 +45,7 @@ echo "net.bridge.bridge-nf-call-ip6tables=0" >> /etc/sysctl.conf
 modprobe br_netfilter
 sysctl -p
 
-crudini --set /etc/neutron/l3_agent.ini DEFAULT interface_driver linuxbridge
+crudini --set /etc/neutron/l3_agent.ini DEFAULT interface_driver linuxbridge_n
 crudini --set /etc/neutron/dhcp_agent.ini DEFAULT interface_driver linuxbridge
 crudini --set /etc/neutron/dhcp_agent.ini DEFAULT dhcp_driver neutron.agent.linux.dhcp.Dnsmasq
 crudini --set /etc/neutron/dhcp_agent.ini DEFAULT enable_isolated_metadata true

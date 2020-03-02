@@ -1,3 +1,4 @@
+crudini --del /etc/neutron/neutron.conf database connection
 crudini --set /etc/neutron/neutron.conf DEFAULT transport_url rabbit://openstack:openstack@controller
 crudini --set /etc/neutron/neutron.conf DEFAULT auth_strategy keystone
 crudini --set /etc/neutron/neutron.conf keystone_authtoken www_authenticate_uri http://controller:5000
