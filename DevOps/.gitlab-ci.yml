@@ -1,0 +1,46 @@
+stages:
+  - build
+  - test 
+  - deploy
+
+image: node:alpine
+
+cache:
+  paths:
+    - /demo-site/node_modules/    
+    
+variables:
+  SERVER1_IP: "172.16.0.122"
+
+test the application:
+  stage: test
+  before_script:
+    - apk --no-cache add curl
+    - npm install pm2 -g
+    - cd demo-site
+  script:
+    - cat ./public/index.html | grep 'JavaScript' 
+    - npm install
+    - pm2 start npm -- start #Le symbole "&" est pour exécuter cette commande en background
+    - sleep 30
+    - curl "http://localhost:3000" | tac | tac | grep -q "React"
+
+deploy_production:
+  stage: deploy
+  environment:
+    name: production
+    url: http://$SERVER1_IP
+  image: ubuntu:18.04  
+  before_script:
+    # Setup SSH deploy keys
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  only:
+    refs:
+      - master
+  script:
+    - ssh -o StrictHostKeyChecking=no ubuntu@$SERVER1_IP "sudo apt-get install nginx git curl -y && curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs && cd /var/www/ && sudo git clone http://10.0.0.3/manuelle/demo.git && cd demo/demo-site && sudo npm install && sudo npm run build && sudo cp -r build/* /var/www/html"
