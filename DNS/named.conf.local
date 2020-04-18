@@ -1,0 +1,11 @@
+#  /etc/bind/named.conf.local
+
+zone "openstack.lab" {
+        type master;
+        file "/etc/bind/db.openstack.lab";
+};
+
+zone "0.0.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.0.0.10.in-addr.arpa";
+};

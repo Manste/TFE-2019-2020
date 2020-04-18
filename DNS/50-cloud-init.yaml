@@ -1,0 +1,14 @@
+# fichier /etc/netplan/50-cloud-init.yaml
+network:
+    ethernets:
+        ens18:
+            addresses:
+            - 10.0.0.2/24
+            gateway4: 10.0.0.1
+            nameservers:
+                addresses:
+                - 8.8.8.8
+                - 8.8.4.4
+                search:
+                - openstack.lab
+    version: 2

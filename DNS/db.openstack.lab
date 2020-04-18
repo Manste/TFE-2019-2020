@@ -1,0 +1,20 @@
+# fichier /etc/bind/db.openstack.lab
+
+$TTL 10800
+$ORIGIN openstack.lab.
+
+@               IN      SOA     ns.openstack.lab. root.openstack.lab. (
+                                                                        2;
+                                                                        3h;
+                                                                        1h;
+                                                                        1w;
+                                                                        1h
+                                                                        );
+@               IN      NS      ns.openstack.lab.
+@               IN      MX      10 gitlab
+ns              IN      A       10.0.0.2
+controller      IN      A       10.0.0.11
+compute1        IN      A       10.0.0.31
+block1          IN      A       10.0.0.41
+gitlab          IN      A       10.0.0.3
+pfsense         IN      A       10.0.0.1

@@ -1,0 +1,19 @@
+# fichier /etc/bind/db.0.0.10.in-addr.arpa
+
+$TTL 10800
+$ORIGIN 0.0.10.in-addr.arpa.
+
+@               IN      SOA     ns.openstack.lab. root.openstack.lab. (
+                                                                        2;
+                                                                        3h;
+                                                                        1h;
+                                                                        1w;
+                                                                        1h
+                                                                        );
+@               IN      NS      ns.openstack.lab.
+2               IN      PTR     ns.openstack.lab.
+11              IN      PTR     controller.openstack.lab.
+31              IN      PTR     compute1.openstack.lab.
+41              IN      PTR     block1.openstack.lab.
+3               IN      PTR     gitlab.openstack.lab.
+1               IN      PTR     pfsense.openstack.lab.
