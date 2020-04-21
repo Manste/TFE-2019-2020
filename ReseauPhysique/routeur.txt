@@ -1,0 +1,45 @@
+hostname RT-01
+ip domain-name openstack.lab
+no ip domain-lookup
+
+!Configuration du réseau interne
+interface G0/1
+ip address 10.11.12.1 255.255.255.0
+no shutdown
+
+!Configuration 
+interface G0/0
+ip address 192.168.60.11 255.255.255.0
+no shutdown
+
+!Configuration des routes statiques
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet 0/0
+ip route 10.0.0.0 255.255.255.0 10.11.12.253
+ip route 172.16.0.0 255.255.255.0 10.11.12.253
+ip route 10.10.10.0 255.255.255.0 10.11.12.253
+
+!Configuration de DHCP
+ip dhcp excluded-address 10.11.12.250 10.11.12.254
+ip dhcp excluded-address 10.11.12.1
+ip dhcp pool LAN-POOL
+network 10.11.12.0 255.255.255.0
+default-router 10.11.12.1
+dns-server 8.8.8.8
+end
+
+!Sécurité au niveau ligne console
+line console 0
+password openstack
+login
+
+!Secret en enable
+enable secret openstack
+service password-encryption
+
+!Authentification par SSH
+username ephec secret openstack
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
+login local
+transport input ssh
+

@@ -27,7 +27,7 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       description: Add security group rules for server
-      name: redirector-security-group
+      name: web01_security_group
       rules:
         - remote_ip_prefix: 0.0.0.0/0
           protocol: tcp
