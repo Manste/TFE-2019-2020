@@ -1,0 +1,30 @@
+Service d’identité: https://github.com/bonclay7/openstack-playground/wiki/Keystone
+Service d'image: https://ilearnstack.files.wordpress.com/2013/04/glance.png
+				
+
+				https://docs.openstack.org/arch-design/_images/osog_0001.png
+				
+				https://hal.inria.fr/hal-01651440/document
+				
+				http://www.linusnova.com/wp-content/uploads/2013/07/11.jpeg
+				
+				https://docs.fuga.cloud/how-to-autoscale-your-gitlab-runners-on-openstack
+				
+
+https://pve.proxmox.com/wiki/Nested_Virtualization 
+				
+				, https://releases.openstack.org/, consulté le 15 février 2020
+				, , , 
+
+Arno Schutijzer
+Typing things
+Display name
+arno
+Local time
+9:59 PM
+Phone number
++32 498 80 32 96
+Email address
+arno.schutijzer@skryv.com
+Skype
+arno.s@outlook.com				

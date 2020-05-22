@@ -10,7 +10,7 @@ cache:
     - /demo-site/node_modules/    
     
 variables:
-  SERVER1_IP: "172.16.0.122"
+  SERVER1_IP: "172.16.0.116"
 
 test the application:
   stage: test
