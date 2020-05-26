@@ -81,27 +81,7 @@ resources:
         security_groups:
           - { get_resource: server_security_group }
 
-  volume_01:
-    type: OS::Cinder::Volume
-    properties:
-      size: 10
-      
-  attachment_01:
-    type: OS::Cinder::VolumeAttachment
-    properties:
-      instance_uuid:  { get_resource: web_01 }
-      volume_id: { get_resource: volume_01 }
 
-  volume_02:
-    type: OS::Cinder::Volume
-    properties:
-      size: 10  
-      
-  attachment_02:
-    type: OS::Cinder::VolumeAttachment
-    properties:
-      instance_uuid:  { get_resource: web_02 }
-      volume_id: { get_resource: volume_02 }
 
 outputs:
   instance_name1:

@@ -12,19 +12,6 @@ cache:
 variables:
   SERVER1_IP: "172.16.0.116"
 
-test the application:
-  stage: test
-  before_script:
-    - apk --no-cache add curl
-    - npm install pm2 -g
-    - cd demo-site
-  script:
-    - cat ./public/index.html | grep 'JavaScript' 
-    - npm install
-    - pm2 start npm -- start #Le symbole "&" est pour exécuter cette commande en background
-    - sleep 30
-    - curl "http://localhost:3000" | tac | tac | grep -q "React"
-
 deploy_production:
   stage: deploy
   environment:
