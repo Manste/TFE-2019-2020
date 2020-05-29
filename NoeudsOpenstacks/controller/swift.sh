@@ -5,7 +5,7 @@ crudini --set /etc/swift/proxy-server.conf pipeline:main pipeline 'catch_errors 
 crudini --set /etc/swift/proxy-server.conf app:proxy-server use 'egg:swift#proxy'
 crudini --set /etc/swift/proxy-server.conf app:proxy-server account_autocreate True
 crudini --set /etc/swift/proxy-server.conf filter:keystoneauth use 'egg:swift#keystoneauth'
-crudini --set /etc/swift/proxy-server.conf filter:keystoneauth operator_roles 'admin,user'
+crudini --set /etc/swift/proxy-server.conf filter:keystoneauth operator_roles 'admin,user,heat_stack_owner'
 crudini --set /etc/swift/proxy-server.conf filter:authtoken paste.filter_factory 'keystonemiddleware.auth_token:filter_factory'
 crudini --set /etc/swift/proxy-server.conf filter:authtoken www_authenticate_uri http://controller:5000
 crudini --set /etc/swift/proxy-server.conf filter:authtoken auth_url http://controller:5000

@@ -1,0 +1,203 @@
+heat_template_version: 2016-10-14
+description: Launch a basic application architecture 
+
+#Description des différents paramètres
+parameters:
+  NetID:
+    type: string
+    description: Network ID to use for the instance.
+    default: provider
+  key_name:
+    type: string
+    label: Key Name
+    description: Name of key-pair to be used for compute instance
+    default: mykey
+  web_server_image:
+    type: string
+    label: Image ID
+    description: Image to be used for web-server instance
+    default: ubuntu-18.04
+  mysql_server_image:
+    type: string
+    label: Image ID
+    description: Image to be used for web-server instance
+    default: cirros
+  web_server_instance_type:
+    type: string
+    label: Instance Type
+    default: n1.small
+    description: Type of instance (flavor) to be used for web-server 
+  mysql_server_instance_type:
+    type: string
+    label: Instance Type
+    default: m1.nano
+    description: Type of instance (flavor) to be used for mysql-server 
+  mysql_server_volume_size:
+    type: number
+    label: Volume Size (GB)
+    description: Volume Size in GB for the database
+    default: 5
+  web_server_volume_size:
+    type: number
+    label: Volume Size (GB)
+    description: Volume Size in GB for the web-server
+    default: 1
+
+#Description des ressources
+resources:
+  web_server_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description: Add security group rules for web server
+      name: web01_security_group
+      rules:
+        - direction: egress
+          ethertype: IPv4
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 443
+          port_range_max: 443
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 80
+          port_range_max: 80
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: udp
+          port_range_min: 80
+          port_range_max: 80
+
+  mysql_server_security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description: Add security group rules for database server
+      name: web01_security_group
+      rules:
+        - direction: egress
+          ethertype: IPv4
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 3306
+          port_range_max: 3306
+        - remote_ip_prefix: 10.0.2.0/24
+          protocol: icmp
+          
+  private_network:
+    type: OS::Neutron::Net
+    
+  private_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: private_network }
+      cidr: "10.0.1.0/24"
+      dns_nameservers: ["8.8.8.8"]
+      gateway_ip: "10.0.1.1"
+      enable_dhcp: "True"
+      allocation_pools:
+        - start: "10.0.1.100"
+          end: "10.0.1.200"
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info:
+        network: { get_param: NetID }
+        
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet: { get_resource: private_subnet }
+      
+  mysql_server:
+    type: OS::Nova::Server
+    depends_on: [web_server_security_group, mysql_server_port, private_subnet]
+    properties:
+      image: { get_param: mysql_server_image } #get_param permet de recevoir les données issues des paramètres
+      flavor: { get_param: mysql_server_instance_type }
+      key_name: { get_param: key_name }
+      networks:
+        - port: { get_resource: mysql_server_port }
+
+  mysql_server_volume:
+    type: OS::Cinder::Volume
+    properties:
+      size: { get_param: mysql_server_volume_size }
+
+  mysql_server_volume_attachement:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      volume_id: { get_resource: mysql_server_volume }
+      instance_uuid: { get_resource: mysql_server }
+
+  mysql_server_port:
+    depends_on: [private_subnet]
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: private_network }
+      fixed_ips:
+        - subnet_id: { get_resource: private_subnet }
+      security_groups:
+        - { get_resource: mysql_server_security_group }
+
+  web_server:
+    type: OS::Nova::Server
+    properties:
+        image: { get_param: web_server_image }
+        flavor: { get_param: web_server_instance_type }
+        key_name: { get_param: key_name }
+        networks:
+        - network: { get_param: NetID }
+        networks:
+          - port: { get_resource: web_server_port}
+
+  web_server_volume:
+    type: OS::Cinder::Volume
+    properties:
+      size: { get_param: web_server_volume_size }
+
+  web_server_volume_attachement:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      volume_id: { get_resource: web_server_volume }
+      instance_uuid: { get_resource: web_server }
+
+  web_server_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_network }
+      fixed_ips:
+        - subnet_id: { get_resource: private_subnet }
+      security_groups:
+        - { get_resource: web_server_security_group }
+        
+  web_server_floating_ip:
+    depends_on: [private_subnet, web_server_port]
+    type: OS::Neutron::FloatingIP 
+    properties: 
+      floating_network: { get_param: NetID } 
+      
+  web_ip_assoc:
+    type: OS::Neutron::FloatingIPAssociation
+    properties:
+      floatingip_id: { get_resource: web_server_floating_ip }
+      port_id: { get_resource: web_server_port }
+  
+outputs:
+  instance_name1:
+    description: Name of the instance mysql.
+    value: { get_attr: [ mysql_server, name ] }
+  instance_ip1:
+    description: IP address of the instance mysql.
+    value: { get_attr: [ mysql_server, first_address ] }
+  instance_name2:
+    description: Name of the instance web.
+    value: { get_attr: [ web_server, name ] }
+  instance_ip2:
+    description: IP address of the instance web.
+    value: { get_attr: [ web_server_floating_ip, floating_ip_address  ] }

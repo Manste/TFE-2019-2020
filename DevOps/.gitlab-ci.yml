@@ -3,14 +3,12 @@ stages:
   - test 
   - deploy
 
-image: node:alpine
-
 cache:
   paths:
     - /demo-site/node_modules/    
     
 variables:
-  SERVER1_IP: "172.16.0.116"
+  SERVER1_IP: "172.16.0.131"
 
 deploy_production:
   stage: deploy
@@ -30,4 +28,4 @@ deploy_production:
     refs:
       - master
   script:
-    - ssh -o StrictHostKeyChecking=no ubuntu@$SERVER1_IP "sudo apt-get install nginx git curl -y && curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs && cd /var/www/ && sudo git clone http://10.0.0.3/manuelle/demo.git && cd demo/demo-site && sudo npm install && sudo npm run build && sudo cp -r build/* /var/www/html"
+    - ssh -o StrictHostKeyChecking=no ubuntu@$SERVER1_IP "sudo apt-get install nginx git curl -y && curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash - && sudo apt-get install -y nodejs && cd /var/www/ && sudo git clone http://10.0.0.3/manuelle/demo-projet.git && cd demo-projet/demo-site && sudo npm install && sudo npm run build && sudo cp -r build/* /var/www/html"
