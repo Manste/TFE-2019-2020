@@ -134,3 +134,9 @@ crudini --set /etc/nova/nova.conf neutron metadata_proxy_shared_secret openstack
 # Activation de la création des réseaux libre-service
 crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
 crudini --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1:1000
+
+# Configuration du débogage de neutron oslo.messaging
+# Afin de traquer des cas spécifiques de bugs (la communication de neutron 
+# avec les autres services via RabbitMQ)
+# Nécessaire pour la détection des erreurs en cas de soucis
+crudini --set /etc/neutron/neutron.conf default_log_levels 'amqp=WARN,amqplib=WARN,boto=WARN,qpid=WARN,sqlalchemy=WARN,suds=INFO,oslo.messaging=DEBUG,oslo_messaging=INFO,iso8601=WARN,requests.packages.urllib3.connectionpool=WARN,urllib3.connectionpool=WARN,websocket=WARN,requests.packages.urllib3.util.retry=WARN,urllib3.util.retry=WARN,keystonemiddleware=WARN,routes.middleware=WARN,stevedore=WARN,taskflow=WARN,keystoneauth=WARN,oslo.cache=INFO,oslo_policy=INFO,dogpile.core.dogpile=INFO'

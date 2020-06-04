@@ -6,7 +6,7 @@ crudini --del /etc/nova/nova.conf DEFAULT log_dir
 # Accès à la file d'attente des messages RabbitMQ
 crudini --set /etc/nova/nova.conf DEFAULT transport_url rabbit://openstack:openstack@controller
 
-# Accès au service d'iedentité
+# Accès au service d'identité
 crudini --set /etc/nova/nova.conf api auth_strategy keystone
 crudini --set /etc/nova/nova.conf keystone_authtoken www_authenticate_uri http://controller:5000/
 crudini --set /etc/nova/nova.conf keystone_authtoken auth_url http://controller:5000/

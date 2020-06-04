@@ -18,3 +18,5 @@ compute1        IN      A       10.0.0.31
 block1          IN      A       10.0.0.41
 gitlab          IN      A       10.0.0.3
 pfsense         IN      A       10.0.0.1
+object1         IN      A       10.0.0.51
+object2         IN      A       10.0.0.52

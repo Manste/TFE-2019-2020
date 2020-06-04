@@ -17,3 +17,5 @@ $ORIGIN 0.0.10.in-addr.arpa.
 41              IN      PTR     block1.openstack.lab.
 3               IN      PTR     gitlab.openstack.lab.
 1               IN      PTR     pfsense.openstack.lab.
+51              IN      PTR     object1.openstack.lab.
+52              IN      PTR     object2.openstack.lab.

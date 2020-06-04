@@ -14,32 +14,32 @@ parameters:
     default: mykey
   web_server_image:
     type: string
-    label: Image ID
+    label: Web-server Image ID
     description: Image to be used for web-server instance
     default: ubuntu-18.04
   mysql_server_image:
     type: string
-    label: Image ID
+    label: MySQL-server Image ID
     description: Image to be used for web-server instance
-    default: cirros
+    default: cirros-0.4.0
   web_server_instance_type:
     type: string
-    label: Instance Type
-    default: n1.small
+    label: Web-server Instance Type
+    default: n1.tiny
     description: Type of instance (flavor) to be used for web-server 
   mysql_server_instance_type:
     type: string
-    label: Instance Type
+    label: MySQL-server Instance Type
     default: m1.nano
     description: Type of instance (flavor) to be used for mysql-server 
   mysql_server_volume_size:
     type: number
-    label: Volume Size (GB)
+    label: MySQL-server Volume Size (GB)
     description: Volume Size in GB for the database
     default: 5
   web_server_volume_size:
     type: number
-    label: Volume Size (GB)
+    label: Web-server Volume Size (GB)
     description: Volume Size in GB for the web-server
     default: 1
 
@@ -188,16 +188,44 @@ resources:
       floatingip_id: { get_resource: web_server_floating_ip }
       port_id: { get_resource: web_server_port }
   
+  extern_server:
+    type: OS::Nova::Server
+    properties:
+      image: { get_param: mysql_server_image }
+      flavor: { get_param: mysql_server_instance_type }
+      key_name: { get_param: key_name }
+      networks:
+      - network: { get_param: NetID }
+      security_groups:
+        - { get_resource: web_server_security_group }
+  
+  extern_volume:
+    type: OS::Cinder::Volume
+    properties:
+      size: 1
+      
+  extern_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid:  { get_resource: extern_server }
+      volume_id: { get_resource: extern_volume }
+  
 outputs:
-  instance_name1:
+  mysql_name:
     description: Name of the instance mysql.
     value: { get_attr: [ mysql_server, name ] }
-  instance_ip1:
+  mysql_ip:
     description: IP address of the instance mysql.
     value: { get_attr: [ mysql_server, first_address ] }
-  instance_name2:
+  web_name:
     description: Name of the instance web.
     value: { get_attr: [ web_server, name ] }
-  instance_ip2:
+  web_ip:
     description: IP address of the instance web.
     value: { get_attr: [ web_server_floating_ip, floating_ip_address  ] }
+  extern_name:
+    description: Name of the instance extern-server.
+    value: { get_attr: [ extern_server, name ] }
+  extern_ip:
+    description: IP address of the instance extern-server.
+    value: { get_attr: [ extern_server, first_address ] }
